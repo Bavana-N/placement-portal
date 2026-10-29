@@ -1,0 +1,57 @@
+
+{% extends 'base.html' %}
+{% block title %}{{ test.title }} | Aptitude Test{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2>{{ test.title }}</h2>
+    <p>Answer all questions and submit your test.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for question in questions %}
+        <div class="card p-4 mb-4">
+            <h5>
+                {{ forloop.counter }}. {{ question.question_text }}
+            </h5>
+
+            <div class="mt-3">
+                <label class="d-block mb-2">
+                    <input type="radio"
+                           name="question_{{ question.id }}"
+                           value="A">
+                    A. {{ question.option_a }}
+                </label>
+
+                <label class="d-block mb-2">
+                    <input type="radio"
+                           name="question_{{ question.id }}"
+                           value="B">
+                    B. {{ question.option_b }}
+                </label>
+
+                <label class="d-block mb-2">
+                    <input type="radio"
+                           name="question_{{ question.id }}"
+                           value="C">
+                    C. {{ question.option_c }}
+                </label>
+
+                <label class="d-block mb-2">
+                    <input type="radio"
+                           name="question_{{ question.id }}"
+                           value="D">
+                    D. {{ question.option_d }}
+                </label>
+            </div>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary"
+                onclick="return confirm('Submit your test?');">
+            Submit Test
+        </button>
+    </form>
+</div>
+{% endblock %}

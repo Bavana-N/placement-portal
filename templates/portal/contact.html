@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us | PlacePro{% endblock %}
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h1 class="section-title">Contact <span class="gradient-text">Us</span></h1>
+      <p class="section-subtitle">We'd love to hear from you!</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card-premium p-4 mb-3 d-flex align-items-center gap-3">
+          <div class="stat-icon-dash"><i class="bi bi-telephone"></i></div>
+          <div>
+            <div class="fw-semibold">Phone</div>
+            <div class="text-muted small">+91 98765 43210</div>
+          </div>
+        </div>
+        <div class="card-premium p-4 mb-3 d-flex align-items-center gap-3">
+          <div class="stat-icon-dash"><i class="bi bi-envelope"></i></div>
+          <div>
+            <div class="fw-semibold">Email</div>
+            <div class="text-muted small">support@placepro.com</div>
+          </div>
+        </div>
+        <div class="card-premium p-4 d-flex align-items-center gap-3">
+          <div class="stat-icon-dash"><i class="bi bi-geo-alt"></i></div>
+          <div>
+            <div class="fw-semibold">Address</div>
+            <div class="text-muted small">University College of Engineering, Nagercoil, Tamil Nadu, India</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card-premium p-4">
+          <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-6">{{ form.name }}</div>
+              <div class="col-md-6">{{ form.email }}</div>
+              <div class="col-12">{{ form.subject }}</div>
+              <div class="col-12">{{ form.message }}</div>
+            </div>
+            <button type="submit" class="btn btn-gradient mt-4 px-4">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

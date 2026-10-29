@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | PlacePro{% endblock %}
+{% block content %}
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <a href="{% url 'dashboard' %}" class="sidebar-link active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="{% url 'profile' %}" class="sidebar-link"><i class="bi bi-person"></i> My Profile</a>
+    <a href="{% url 'dashboard' %}" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> My Applications</a>
+    <a href="{% url 'aptitude_tests' %}" class="sidebar-link"><i class="bi bi-journal-check"></i> Aptitude Tests</a>
+    <a href="{% url 'announcements' %}" class="sidebar-link"><i class="bi bi-megaphone"></i> Announcements</a>
+    <a href="{% url 'opportunities' %}" class="sidebar-link"><i class="bi bi-bookmark"></i> Browse Jobs</a>
+    <a href="{% url 'logout' %}" class="sidebar-link"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Dashboard</h3>
+        <p class="text-muted mb-0">Welcome back, {{ request.user.first_name|default:request.user.username }}! Here's
+          what's happening with your placement journey.</p>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card-dash d-flex align-items-center gap-3">
+          <div class="stat-icon-dash"><i class="bi bi-send"></i></div>
+          <div>
+            <h5 class="fw-bold mb-0">{{ total_applications }}</h5>
+            <div class="text-muted small">Total Applied</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card-dash d-flex align-items-center gap-3">
+          <div class="stat-icon-dash"><i class="bi bi-star"></i></div>
+          <div>
+            <h5 class="fw-bold mb-0">{{ shortlisted_count }}</h5>
+            <div class="text-muted small">Shortlisted</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card-dash d-flex align-items-center gap-3">
+          <div class="stat-icon-dash"><i class="bi bi-journal-check"></i></div>
+          <div>
+            <h5 class="fw-bold mb-0">{{ upcoming_tests|length }}</h5>
+            <div class="text-muted small">Tests Available</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card-dash d-flex align-items-center gap-3">
+          <div class="stat-icon-dash"><i class="bi bi-trophy"></i></div>
+          <div>
+            <h5 class="fw-bold mb-0">{{ selected_count }}</h5>
+            <div class="text-muted small">Selected</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="card-premium p-4 mb-4">
+          <h6 class="fw-bold mb-3">Recent Applications</h6>
+          {% for app in applications %}
+          <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+            <div class="d-flex gap-3 align-items-center">
+              <div class="company-logo-badge" style="width:40px;height:40px;font-size:1rem;">{{app.job.company.name|slice:":1" }}</div>
+              <div>
+                <div class="fw-semibold small">{{ app.job.title }}</div>
+                <div class="text-muted small">{{ app.job.company.name }} &bull; {{ app.applied_on|timesince }} ago</div>
+              </div>
+            </div>
+            <span
+              class="badge-soft {% if app.status == 'SELECTED' %}badge-success-soft{% elif app.status == 'REJECTED' %}badge-important{% endif %}">{{app.get_status_display }}</span>
+          </div>
+          {% empty %}
+          <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-file-earmark-text"></i></div>
+            <h6>No applications yet</h6>
+            <a href="{% url 'opportunities' %}" class="btn btn-gradient btn-sm mt-2">Browse Jobs</a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="card-premium p-4">
+          <h6 class="fw-bold mb-3">Latest Jobs For You</h6>
+          {% for job in latest_jobs %}
+          <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+            <div>
+              <div class="fw-semibold small">{{ job.title }}</div>
+              <div class="text-muted small">{{ job.company.name }} &bull; {{ job.location }}</div>
+            </div>
+            <a href="{% url 'apply_job' job.slug %}" class="btn btn-outline-gradient btn-sm">Apply</a>
+          </div>
+          {% empty %}
+          <p class="text-muted small mb-0">No jobs available right now.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="container my-4">
+        <h3 class="mb-3">My Aptitude Performance</h3>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="card p-3">
+              <h6>Tests Attended</h6>
+              <h2>{{ total_tests_attended }}</h2>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card p-3">
+              <h6>Best Percentage</h6>
+              <h2>{{ aptitude_best_score }}%</h2>
+            </div>
+          </div>
+        </div>
+
+        <h4>Previous Test Results</h4>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Test Name</th>
+                <th>Score</th>
+                <th>Percentage</th>
+                <th>Date</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for attempt in aptitude_attempts %}
+              <tr>
+                <td>{{ attempt.test.title }}</td>
+                <td>
+                  {{ attempt.score }} / {{ attempt.total_marks }}
+                </td>
+                <td>{{ attempt.percentage }}%</td>
+                <td>
+                  {{ attempt.attempted_on|date:"d M Y" }}
+                </td>
+                <td>
+                  <a href="{% url 'aptitude_result' attempt.id %}">
+                    View Result
+                  </a>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center">
+                  You have not attended any aptitude tests yet.
+                  <a href="{% url 'aptitude_tests' %}">
+                    Start a Test
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card-premium p-4 mb-4">
+          <h6 class="fw-bold mb-3">Upcoming Tests</h6>
+          {% for test in upcoming_tests %}
+          <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+            <div>
+              <div class="fw-semibold small">{{ test.title }}</div>
+              <div class="text-muted small">{{ test.duration_minutes }} min &bull; {{ test.total_questions }} Qs</div>
+            </div>
+            <span class="badge-soft">{{ test.get_difficulty_display }}</span>
+          </div>
+          {% empty %}
+          <p class="text-muted small mb-0">No tests available right now.</p>
+          {% endfor %}
+        </div>
+
+        <div class="card-premium p-4">
+          <h6 class="fw-bold mb-3">Announcements</h6>
+          {% for a in announcements %}
+          <div class="border-bottom py-2">
+            <div class="fw-semibold small">{{ a.title }}</div>
+            <div class="text-muted small">{{ a.posted_on|date:"d M Y" }}</div>
+          </div>
+          {% empty %}
+          <p class="text-muted small mb-0">No announcements yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

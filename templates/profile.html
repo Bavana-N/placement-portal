@@ -1,0 +1,87 @@
+
+{% extends 'base.html' %}
+
+{% block title %}My Profile | PlacePro{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold mb-4">My Profile</h2>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 p-4">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        {{ form.phone }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Graduation Year</label>
+                        {{ form.graduation_year }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">College</label>
+                        {{ form.college }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Course</label>
+                        {{ form.course }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Resume</label>
+                        {{ form.resume }}
+
+                        {% if profile.resume %}
+                            <p class="mt-2">
+                                <a href="{{ profile.resume.url }}" target="_blank">
+                                    View Current Resume
+                                </a>
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Profile Picture</label>
+                        {{ form.profile_picture }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 p-4 text-center">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}"
+                         alt="Profile Picture"
+                         class="rounded-circle mx-auto mb-3"
+                         style="width:120px;height:120px;object-fit:cover;">
+                {% else %}
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                         style="width:120px;height:120px;font-size:40px;">
+                        {{ request.user.username|slice:":1"|upper }}
+                    </div>
+                {% endif %}
+
+                <h5>{{ request.user.get_full_name|default:request.user.username }}</h5>
+                <p class="text-muted">{{ request.user.email }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

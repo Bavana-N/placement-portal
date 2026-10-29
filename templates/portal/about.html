@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}About Us | PlacePro{% endblock %}
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h1 class="section-title">About <span class="gradient-text">PlacePro</span></h1>
+      <p class="section-subtitle">Empowering students to build successful careers through meaningful placements</p>
+    </div>
+
+    <div class="row g-4 mb-5 reveal">
+      <div class="col-md-6">
+        <div class="card-premium p-4 h-100">
+          <i class="bi bi-bullseye" style="font-size:2rem;color:var(--primary-3);"></i>
+          <h4 class="fw-bold mt-3">Our Mission</h4>
+          <p class="text-muted mb-0">To bridge the gap between talented students and top companies by providing a transparent, dynamic, and efficient placement platform that empowers every student to find the right career opportunity.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-premium p-4 h-100">
+          <i class="bi bi-eye" style="font-size:2rem;color:var(--primary-3);"></i>
+          <h4 class="fw-bold mt-3">Our Vision</h4>
+          <p class="text-muted mb-0">To become India's most trusted placement ecosystem, where every student — regardless of background — has equal access to quality job opportunities and career growth.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-5 reveal">
+      <div class="col-6 col-md-3">
+        <div class="card-premium text-center p-4">
+          <h3 class="fw-bold text-primary-custom"><span class="counter" data-target="{{ total_companies|default:250 }}" data-suffix="+">0</span></h3>
+          <p class="text-muted small mb-0">Companies</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card-premium text-center p-4">
+          <h3 class="fw-bold text-primary-custom"><span class="counter" data-target="{{ total_jobs|default:1200 }}" data-suffix="+">0</span></h3>
+          <p class="text-muted small mb-0">Jobs Posted</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card-premium text-center p-4">
+          <h3 class="fw-bold text-primary-custom"><span class="counter" data-target="{{ placed_students|default:850 }}" data-suffix="+">0</span></h3>
+          <p class="text-muted small mb-0">Placed Students</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card-premium text-center p-4">
+          <h3 class="fw-bold text-primary-custom"><span class="counter" data-target="{{ placement_rate|default:95 }}" data-suffix="%">0</span></h3>
+          <p class="text-muted small mb-0">Placement Rate</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title text-center reveal">Why Choose <span class="gradient-text">Us</span></h2>
+    <div class="row g-4 mb-5 reveal">
+      <div class="col-md-4">
+        <div class="card-premium p-4 h-100 text-center">
+          <i class="bi bi-shield-check" style="font-size:2rem;color:var(--primary-3);"></i>
+          <h6 class="fw-bold mt-3">Verified Opportunities</h6>
+          <p class="text-muted small mb-0">Every job listing is reviewed before it goes live.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-premium p-4 h-100 text-center">
+          <i class="bi bi-lightning-charge" style="font-size:2rem;color:var(--primary-3);"></i>
+          <h6 class="fw-bold mt-3">Fast Applications</h6>
+          <p class="text-muted small mb-0">Apply to multiple jobs in just a few clicks.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-premium p-4 h-100 text-center">
+          <i class="bi bi-graph-up-arrow" style="font-size:2rem;color:var(--primary-3);"></i>
+          <h6 class="fw-bold mt-3">Track Progress</h6>
+          <p class="text-muted small mb-0">Real-time dashboard for all your applications.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title text-center reveal">Frequently Asked <span class="gradient-text">Questions</span></h2>
+    <div class="row justify-content-center reveal">
+      <div class="col-lg-8">
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item rounded-premium mb-3 overflow-hidden shadow-premium border-0">
+            <h2 class="accordion-header">
+              <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Is PlacePro free for students?</button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted">Yes, PlacePro is completely free for students to register, browse jobs, and apply.</div>
+            </div>
+          </div>
+          <div class="accordion-item rounded-premium mb-3 overflow-hidden shadow-premium border-0">
+            <h2 class="accordion-header">
+              <button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">How do I apply for a job?</button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted">Simply create an account, browse the Opportunities page, and click Apply Now on any listing.</div>
+            </div>
+          </div>
+          <div class="accordion-item rounded-premium mb-3 overflow-hidden shadow-premium border-0">
+            <h2 class="accordion-header">
+              <button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Can I track my application status?</button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted">Yes, your personal dashboard shows the live status of every application you submit.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

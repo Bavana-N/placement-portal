@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Aptitude Tests | PlacePro{% endblock %}
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h1 class="section-title">Aptitude <span class="gradient-text">Tests</span></h1>
+      <p class="section-subtitle">Practice tests to improve your skills</p>
+    </div>
+    <div class="row g-4 reveal">
+      {% for test in tests %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card-premium p-4 h-100">
+          <div class="stat-icon-dash mb-3"><i class="bi bi-journal-check"></i></div>
+          <h5 class="fw-bold">{{ test.title }}</h5>
+          <div class="d-flex gap-3 text-muted small mb-2">
+            <span><i class="bi bi-list-ol"></i> {{ test.total_questions }} Questions</span>
+            <span><i class="bi bi-clock"></i> {{ test.duration_minutes }} Min</span>
+          </div>
+          <span class="badge-soft mb-3 d-inline-block">{{ test.get_difficulty_display }}</span>
+          <br>
+
+          <a href="{% url 'aptitude_test_detail' test.id %}" class="btn btn-gradient w-100">
+            Start Test
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="empty-state">
+          <div class="empty-icon"><i class="bi bi-journal-x"></i></div>
+          <h5>No tests available yet</h5>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

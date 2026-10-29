@@ -1,0 +1,38 @@
+
+{% extends 'base.html' %}
+{% block title %}Test Result{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card p-4 text-center">
+        <h2>Test Completed!</h2>
+        <h4>{{ attempt.test.title }}</h4>
+
+        <h1 class="display-4 text-success mt-3">
+            {{ attempt.score }} / {{ attempt.total_marks }}
+        </h1>
+
+        <h3>{{ attempt.percentage }}%</h3>
+
+        <p>
+            Correct Answers: {{ attempt.score }}<br>
+            Wrong or Unanswered:
+            {{ attempt.total_marks|add:"-"|add:attempt.score }}
+        </p>
+
+        <p>
+            Completed on: {{ attempt.attempted_on|date:"d M Y, h:i A" }}
+        </p>
+
+        <a href="{% url 'dashboard' %}"
+           class="btn btn-primary mt-3">
+            Go to Dashboard
+        </a>
+
+        <a href="{% url 'aptitude_tests' %}"
+           class="btn btn-outline-secondary mt-2">
+            More Tests
+        </a>
+    </div>
+</div>
+{% endblock %}

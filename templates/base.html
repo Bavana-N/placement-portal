@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}PlacePro | Placement Portal{% endblock %}</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- Loading Spinner -->
+  <div class="loader-wrap" id="pagePreloader">
+    <div class="spinner-gradient"></div>
+  </div>
+
+  <!-- ============================ NAVBAR ============================ -->
+  <nav class="navbar navbar-expand-lg navbar-glass">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
+        <span class="navbar-brand-logo"><i class="bi bi-mortarboard-fill"></i></span>
+        <span>
+          <span class="brand-text d-block">PlacePro</span>
+          <span class="brand-tagline">Placement Portal</span>
+        </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item"><a
+              class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+              href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item"><a
+              class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'about' %}active{% endif %}"
+              href="{% url 'about' %}">About</a></li>
+          <li class="nav-item"><a
+              class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'companies' %}active{% endif %}"
+              href="{% url 'companies' %}">Companies</a></li>
+          <li class="nav-item"><a
+              class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'opportunities' %}active{% endif %}"
+              href="{% url 'opportunities' %}">Opportunities</a></li>
+          <li class="nav-item"><a
+              class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'aptitude_tests' %}active{% endif %}"
+              href="{% url 'aptitude_tests' %}">Aptitude Tests</a></li>
+          <li class="nav-item"><a
+              class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'announcements' %}active{% endif %}"
+              href="{% url 'announcements' %}">Announcements</a></li>
+          <li class="nav-item"><a
+              class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'contact' %}active{% endif %}"
+              href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0 ms-lg-3">
+          {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="btn btn-outline-gradient btn-sm px-3">
+            <i class="bi bi-speedometer2"></i> Dashboard
+          </a>
+          <a href="{% url 'profile' %}" class="nav-profile">
+            {% if request.user.is_authenticated %}
+            {% if request.user.profile.profile_picture %}
+            <img src="{{ request.user.profile.profile_picture.url }}" alt="Profile" class="navbar-profile-img">
+            {% else %}
+            <span class="navbar-profile-placeholder">
+              {{ request.user.username|slice:":1"|upper }}
+            </span>
+            {% endif %}
+            {% endif %}
+          </a>
+          <a href="{% url 'logout' %}" class="btn btn-gradient btn-sm px-3">Logout</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline-gradient btn-sm px-3">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-gradient btn-sm px-3">Register</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================ MESSAGES ============================ -->
+  {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+    <div
+      class="alert alert-{{ message.tags }} alert-dismissible fade show alert-auto-dismiss rounded-premium shadow-premium border-0"
+      role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- ============================ PAGE CONTENT ============================ -->
+  {% block content %}{% endblock %}
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="footer-premium">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="navbar-brand-logo"><i class="bi bi-mortarboard-fill"></i></span>
+            <span class="fw-bold fs-5 text-white">PlacePro</span>
+          </div>
+          <p class="small">Connecting ambitious students with India's top recruiting companies. Your career journey
+            starts here.</p>
+          <div class="d-flex gap-2 mt-3">
+            <a href="#" class="footer-social"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="footer-social"><i class="bi bi-twitter-x"></i></a>
+            <a href="#" class="footer-social"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="footer-social"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-6">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled small d-flex flex-column gap-2">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'companies' %}">Companies</a></li>
+            <li><a href="{% url 'opportunities' %}">Opportunities</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-6">
+          <h5>Resources</h5>
+          <ul class="list-unstyled small d-flex flex-column gap-2">
+            <li><a href="{% url 'aptitude_tests' %}">Aptitude Tests</a></li>
+            <li><a href="{% url 'announcements' %}">Announcements</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Contact</h5>
+          <ul class="list-unstyled small d-flex flex-column gap-2">
+            <li><i class="bi bi-geo-alt me-2"></i>University College of Engineering, Nagercoil, Tamil Nadu, India</li>
+            <li><i class="bi bi-envelope me-2"></i>support@placepro.com</li>
+            <li><i class="bi bi-telephone me-2"></i>+91 98765 43210</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom d-flex flex-wrap justify-content-between">
+        <span>© {% now "Y" %} PlacePro Placement Portal. All rights reserved.</span>
+        <span>Built with Django &amp; Bootstrap 5</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop"><i class="bi bi-arrow-up"></i></button>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+
+</html>

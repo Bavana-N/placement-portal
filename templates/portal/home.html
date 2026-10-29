@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}PlacePro | Your Future Starts Here{% endblock %}
+
+{% block content %}
+
+<!-- ============ HERO ============ -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="hero-title mb-3">Your Future <br><span class="highlight">Starts Here</span></h1>
+        <p class="hero-subtitle mb-4">Discover top job opportunities, connect with leading companies, and build your
+          dream career with PlacePro.</p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{% url 'opportunities' %}" class="btn btn-gradient btn-lg px-4">Explore Jobs</a>
+          <a href="{% url 'companies' %}" class="btn btn-light btn-lg px-4 rounded-pill fw-semibold">For Companies</a>
+        </div>
+
+        <div class="stat-bar row g-0 mt-2">
+          <div class="col-3 stat-item border-end border-white border-opacity-10">
+            <div class="stat-number"><span class="counter" data-target="{{ total_companies|default:250 }}"
+                data-suffix="+">0</span></div>
+            <div class="stat-label">Companies</div>
+          </div>
+          <div class="col-3 stat-item border-end border-white border-opacity-10">
+            <div class="stat-number"><span class="counter" data-target="{{ total_jobs|default:1200 }}"
+                data-suffix="+">0</span></div>
+            <div class="stat-label">Job Opportunities</div>
+          </div>
+          <div class="col-3 stat-item border-end border-white border-opacity-10">
+            <div class="stat-number"><span class="counter" data-target="{{ placed_students|default:850 }}"
+                data-suffix="+">0</span></div>
+            <div class="stat-label">Placed Students</div>
+          </div>
+          <div class="col-3 stat-item">
+            <div class="stat-number"><span class="counter" data-target="{{ placement_rate|default:95 }}"
+                data-suffix="%">0</span></div>
+            <div class="stat-label">Placement Rate</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center mt-5 mt-lg-0">
+        <div class="hero-illustration-wrap">
+          <img src="{% static 'images/hero-illustration.png' %}" alt="Student exploring job opportunities"
+            class="img-fluid hero-illustration">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED COMPANIES ============ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 reveal">
+      <div>
+        <h2 class="section-title">Top Recruiting <span class="gradient-text">Companies</span></h2>
+        <p class="text-muted mb-0">Trusted by leading organizations across India</p>
+      </div>
+      <a href="{% url 'companies' %}" class="btn btn-outline-gradient d-none d-md-inline">View all</a>
+    </div>
+    <div class="row g-4 reveal">
+      {% for company in featured_companies %}
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="card-premium text-center p-4 h-100 d-flex flex-column align-items-center justify-content-center">
+          <div class="company-logo-badge mb-2">
+            {% if company.logo %}
+            <img src="{{ company.logo.url }}" alt="{{ company.name }} Logo">
+            {% else %}
+            {{ company.name|slice:":1" }}
+            {% endif %}
+          </div>
+          <div class="fw-semibold small">{{ company.name }}</div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <p class="text-muted">Companies will appear here once added via the admin panel.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ LATEST JOBS ============ -->
+<section class="section-pad bg-soft-primary">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 reveal">
+      <h2 class="section-title mb-0">Latest Job <span class="gradient-text">Opportunities</span></h2>
+      <a href="{% url 'opportunities' %}" class="btn btn-outline-gradient d-none d-md-inline">View all jobs</a>
+    </div>
+    <div class="row g-4 reveal">
+      {% for job in latest_jobs %}
+      <div class="col-md-6 col-lg-3">
+        <div class="card-premium job-card p-4 h-100">
+          <div class="company-logo-badge mb-3">{{ job.company.name|slice:":1" }}</div>
+          <h6 class="fw-bold mb-1">{{ job.title }}</h6>
+          <p class="text-muted small mb-2">{{ job.company.name }}</p>
+          <p class="text-muted small mb-2"><i class="bi bi-geo-alt"></i> {{ job.location }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="badge-soft">{{ job.get_job_type_display }}</span>
+            <span class="fw-bold text-primary-custom small">{{ job.package_display }}</span>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="empty-state">
+          <div class="empty-icon"><i class="bi bi-briefcase"></i></div>
+          <h5>No jobs posted yet</h5>
+          <p class="text-muted">Check back soon — new opportunities are added regularly.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="cta-banner d-flex flex-wrap justify-content-between align-items-center gap-4 reveal">
+      <div>
+        <h3 class="fw-bold mb-2">Get Placed in Your Dream Company</h3>
+        <p class="mb-0 opacity-90">Explore thousands of opportunities and kickstart your career today.</p>
+      </div>
+      <a href="{% url 'register' %}" class="btn btn-light btn-lg rounded-pill fw-semibold px-4">Get Started <i
+          class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY CHOOSE US ============ -->
+<section class="section-pad bg-soft-primary">
+  <div class="container">
+    <h2 class="section-title text-center reveal">Why Choose <span class="gradient-text">PlacePro?</span></h2>
+    <p class="section-subtitle text-center reveal">Everything you need for a successful placement journey</p>
+    <div class="row g-4 reveal">
+      <div class="col-md-3">
+        <div class="card-premium text-center p-4 h-100">
+          <i class="bi bi-buildings" style="font-size:2.2rem;color:var(--primary-3);"></i>
+          <h6 class="fw-bold mt-3">Top Companies</h6>
+          <p class="text-muted small mb-0">Connect with 250+ leading companies across India</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-premium text-center p-4 h-100">
+          <i class="bi bi-patch-check" style="font-size:2.2rem;color:var(--primary-3);"></i>
+          <h6 class="fw-bold mt-3">Verified Jobs</h6>
+          <p class="text-muted small mb-0">100% verified job opportunities, no spam</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-premium text-center p-4 h-100">
+          <i class="bi bi-journal-check" style="font-size:2.2rem;color:var(--primary-3);"></i>
+          <h6 class="fw-bold mt-3">Aptitude Tests</h6>
+          <p class="text-muted small mb-0">Practice and improve your aptitude skills</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-premium text-center p-4 h-100">
+          <i class="bi bi-headset" style="font-size:2.2rem;color:var(--primary-3);"></i>
+          <h6 class="fw-bold mt-3">Placement Support</h6>
+          <p class="text-muted small mb-0">End-to-end support till you get placed</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLACEMENT PROCESS TIMELINE ============ -->
+<section class="section-pad">
+  <div class="container">
+    <h2 class="section-title text-center reveal">Placement <span class="gradient-text">Process</span></h2>
+    <p class="section-subtitle text-center reveal">Your journey to a dream job in four simple steps</p>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="timeline reveal">
+          <div class="timeline-item">
+            <h6 class="fw-bold">1. Create Your Profile</h6>
+            <p class="text-muted small mb-0">Register and build a complete profile with your resume and skills.</p>
+          </div>
+          <div class="timeline-item">
+            <h6 class="fw-bold">2. Explore Opportunities</h6>
+            <p class="text-muted small mb-0">Browse jobs from top companies filtered by skills and location.</p>
+          </div>
+          <div class="timeline-item">
+            <h6 class="fw-bold">3. Apply &amp; Assess</h6>
+            <p class="text-muted small mb-0">Apply to roles and take aptitude tests to strengthen your application.</p>
+          </div>
+          <div class="timeline-item">
+            <h6 class="fw-bold">4. Get Placed</h6>
+            <p class="text-muted small mb-0">Attend interviews and land your dream job with our support.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section-pad bg-soft-primary">
+  <div class="container">
+    <h2 class="section-title text-center reveal">Student <span class="gradient-text">Success Stories</span></h2>
+    <p class="section-subtitle text-center reveal">Hear from students who found their dream jobs through PlacePro</p>
+    <div class="row g-4 reveal">
+      <div class="col-md-4">
+        <div class="testimonial-card h-100">
+          <p class="text-muted">"PlacePro made my placement journey so smooth. I got shortlisted by three companies
+            within a month."</p>
+          <div class="d-flex align-items-center gap-3 mt-3">
+            <div class="testimonial-avatar">B</div>
+            <div><strong>Bavana R</strong>
+              <div class="small text-muted">Software Engineer, Google</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card h-100">
+          <p class="text-muted">"The aptitude tests helped me prepare well. The dashboard kept me updated on every
+            application."</p>
+          <div class="d-flex align-items-center gap-3 mt-3">
+            <div class="testimonial-avatar">A</div>
+            <div><strong>Arjun K</strong>
+              <div class="small text-muted">Data Analyst, Microsoft</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card h-100">
+          <p class="text-muted">"Clean interface, verified jobs, and quick application process. Highly recommend
+            PlacePro!"</p>
+          <div class="d-flex align-items-center gap-3 mt-3">
+            <div class="testimonial-avatar">S</div>
+            <div><strong>Sneha M</strong>
+              <div class="small text-muted">Web Developer, Infosys</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LATEST ANNOUNCEMENTS ============ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 reveal">
+      <h2 class="section-title mb-0">Latest <span class="gradient-text">Announcements</span></h2>
+      <a href="{% url 'announcements' %}" class="btn btn-outline-gradient d-none d-md-inline">View all</a>
+    </div>
+    <div class="row g-4 reveal">
+      {% for a in announcements %}
+      <div class="col-md-4">
+        <div class="card-premium p-4 h-100">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="badge-soft {% if a.is_important %}badge-important{% endif %}">
+              {% if a.is_important %}Important{% else %}Update{% endif %}
+            </span>
+            <small class="text-muted">{{ a.posted_on|date:"d M Y" }}</small>
+          </div>
+          <h6 class="fw-bold">{{ a.title }}</h6>
+          <p class="text-muted small mb-0">{{ a.description|truncatewords:16 }}</p>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="empty-state">
+          <div class="empty-icon"><i class="bi bi-megaphone"></i></div>
+          <h5>No announcements yet</h5>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

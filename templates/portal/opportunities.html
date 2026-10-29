@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Job Opportunities | PlacePro{% endblock %}
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-4 reveal">
+      <h1 class="section-title">Job <span class="gradient-text">Opportunities</span></h1>
+      <p class="section-subtitle">Find the right job and build your career</p>
+    </div>
+
+    <form method="get" class="card-premium p-3 mb-5 reveal">
+      <div class="row g-2">
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+            <input type="text" name="q" value="{{ query }}" class="form-control border-start-0" placeholder="Job title, skills...">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <input type="text" name="location" value="{{ location }}" class="form-control" placeholder="Location">
+        </div>
+        <div class="col-md-3">
+          <select name="job_type" class="form-select">
+            <option value="">Job Type</option>
+            {% for value, label in job_types %}
+            <option value="{{ value }}" {% if job_type == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-gradient w-100">Search</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="row g-4 reveal">
+      {% for job in page_obj %}
+      <div class="col-lg-6">
+        <div class="card-premium job-card p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="d-flex gap-3">
+              <div class="company-logo-badge">{{ job.company.name|slice:":1" }}</div>
+              <div>
+                <h6 class="fw-bold mb-1">{{ job.title }}</h6>
+                <p class="text-muted small mb-0">{{ job.company.name }}</p>
+              </div>
+            </div>
+            <a href="{% url 'apply_job' job.slug %}" class="btn btn-gradient btn-sm">Apply Now</a>
+          </div>
+          <div class="d-flex flex-wrap gap-3 text-muted small mb-2">
+            <span><i class="bi bi-geo-alt"></i> {{ job.location }}</span>
+            <span><i class="bi bi-briefcase"></i> {{ job.get_job_type_display }}</span>
+            <span><i class="bi bi-clock-history"></i> {{ job.experience }}</span>
+            <span class="fw-semibold text-primary-custom">{{ job.package_display }}</span>
+          </div>
+          <div class="mb-2">
+            {% for skill in job.skills_list %}<span class="skill-chip">{{ skill }}</span>{% endfor %}
+          </div>
+          <p class="text-muted small mb-0"><i class="bi bi-mortarboard"></i> {{ job.eligibility }}</p>
+          <p class="text-muted small mt-2 mb-0">Posted {{ job.posted_on|timesince }} ago</p>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="empty-state">
+          <div class="empty-icon"><i class="bi bi-search"></i></div>
+          <h5>No jobs match your search</h5>
+          <p class="text-muted">Try different keywords or clear filters.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="mt-5 d-flex justify-content-center">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ query }}&location={{ location }}&job_type={{ job_type }}">Previous</a></li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}&q={{ query }}&location={{ location }}&job_type={{ job_type }}">{{ num }}</a></li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ query }}&location={{ location }}&job_type={{ job_type }}">Next</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
